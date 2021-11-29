@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-
+using PetStoreAPI.DataProviders;
 using PetStoreAPI.Framework;
 using PetStoreAPI.Pages.StorePages;
 using System;
@@ -13,7 +13,7 @@ namespace PetStoreAPI.Tests.StoreTests
     {
         private HttpStatusCode statusCode;
 
-        [Test]
+        [TestCaseSource(typeof(DataForPostStoreOrder), nameof(DataForPostStoreOrder.GetDataForCSV))]
         public void PostStoreOrderTest(int id, int petId, int quantity, string status, bool complete)
         {
             Assert.Multiple(() =>

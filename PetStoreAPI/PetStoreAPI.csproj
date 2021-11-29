@@ -15,8 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataProviders\" />
-    <Folder Include="Utils\" />
+    <None Update="DataProviders\DataForPostOrder.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
