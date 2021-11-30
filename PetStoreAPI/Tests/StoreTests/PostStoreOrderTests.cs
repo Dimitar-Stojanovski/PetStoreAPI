@@ -14,7 +14,7 @@ namespace PetStoreAPI.Tests.StoreTests
         private HttpStatusCode statusCode;
 
         [TestCaseSource(typeof(DataForPostStoreOrder), nameof(DataForPostStoreOrder.GetDataForCSV))]
-        public void PostStoreOrderTest(int id, int petId, int quantity, string status, bool complete)
+        public void PostStoreOrderTest(int id, int petId, int quantity, dynamic status, dynamic complete)
         {
             Assert.Multiple(() =>
             {

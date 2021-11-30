@@ -12,23 +12,36 @@ namespace PetStoreAPI.DataProviders
     {
         
 
-        public static IEnumerable<dynamic[]> GetDataForCSV()
+        public static IEnumerable<dynamic []> GetDataForCSV()
         {
             using (var reader = new StreamReader(StaticVariables._filePath))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture)) 
             {
                 while (csv.Read())
                 {
-                        
-                        int id = csv.GetRecord(0);
-                        int petId = csv.GetRecord(1);
-                        int quantity = csv.GetRecord(2);
-                        string status = csv.GetField(3);
-                        string complete = csv.GetField(4);
+                    bool IsConverted = true;
 
-                        yield return new dynamic[] { id, petId, quantity, status, complete };
                     
+                    string id = csv.GetField(0);
                    
+                   
+                    string petId = csv.GetField(1);
+                    
+
+
+                    string quantity = csv.GetField(2);
+                    
+
+                    string status = csv.GetField(3);
+
+
+                    string complete = csv.GetField(4);
+                    
+
+                    yield return new dynamic[] { id, petId, quantity,  status, complete } ;
+
+
+
                 }
                 
             }
