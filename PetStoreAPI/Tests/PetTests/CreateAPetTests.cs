@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using PetStoreAPI.DataProviders;
 using PetStoreAPI.Framework;
 using PetStoreAPI.Pages.PetPages;
 using RestSharp;
@@ -13,19 +14,19 @@ namespace PetStoreAPI.Tests.PetTests
     {
         private HttpStatusCode statusCode;
 
-        [Test]
+        [TestCaseSource(typeof(DataForCreateAPet), nameof(DataForCreateAPet.TestDataForCreatingPet))]
 
-        public void CreateAPet()
+        public void CreateAPet(int id, int catId, string catName, string url1, string url2, int tagId, string tagName,string status)
         {
             Assert.Multiple(() =>
             {
                 var _pet = new AddAPetBody
                 {
-                    id = 33,
-                    category = new AddAPetBody.Category { id = 31, name = "Doggie" },
-                    photoUrls = new[] { "Picture 1", "Picture 2" },
-                    tags = new[] { new AddAPetBody.Tag { id = 22, name = "Doggie" }, new AddAPetBody.Tag { id = 33, name = "Dogo" } },
-                    status = "available",
+                    id = id,
+                    category = new AddAPetBody.Category { id = catId, name = catName },
+                    photoUrls = new[] { url1, url2 },
+                    tags = new[] { new AddAPetBody.Tag { id = tagId, name = tagName }, new AddAPetBody.Tag { id = tagId, name = tagName } },
+                    status = status,
 
                 };
 
@@ -34,16 +35,16 @@ namespace PetStoreAPI.Tests.PetTests
                 var code = (int)response.StatusCode;
                 Assert.AreEqual(200, code);
                 var content = ModifyContent.DeserializeJson<AddAPetBody>(response);
-                Assert.AreEqual(content.id, 33);
-                Assert.AreEqual(content.category.id, 31);
-                Assert.AreEqual(content.category.name, "Doggie");
-                Assert.AreEqual(content.photoUrls[0], "Picture 1");
-                Assert.AreEqual(content.photoUrls[1], "Picture 2");
-                Assert.AreEqual(content.tags[0].id, 22);
-                Assert.AreEqual(content.tags[0].name, "Doggie");
-                Assert.AreEqual(content.tags[1].id, 33);
-                Assert.AreEqual(content.tags[1].name, "Dogo");
-                Assert.AreEqual(content.status, "available");
+                Assert.AreEqual(content.id, id);
+                Assert.AreEqual(content.category.id, catId);
+                Assert.AreEqual(content.category.name, catName);
+                Assert.AreEqual(content.photoUrls[0], url1);
+                Assert.AreEqual(content.photoUrls[1], url2);
+                Assert.AreEqual(content.tags[0].id, tagId);
+                Assert.AreEqual(content.tags[0].name, tagName);
+                Assert.AreEqual(content.tags[1].id, tagId);
+                Assert.AreEqual(content.tags[1].name, tagName);
+                Assert.AreEqual(content.status, status);
 
             });
         }
