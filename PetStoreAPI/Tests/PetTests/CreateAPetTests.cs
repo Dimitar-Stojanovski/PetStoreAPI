@@ -12,7 +12,7 @@ namespace PetStoreAPI.Tests.PetTests
 {
     public class CreateAPetTests
     {
-        private HttpStatusCode statusCode;
+        
 
         [TestCaseSource(typeof(DataForCreateAPet), nameof(DataForCreateAPet.TestDataForCreatingPet))]
 
@@ -46,7 +46,35 @@ namespace PetStoreAPI.Tests.PetTests
                 Assert.AreEqual(content.tags[1].name, tagName);
                 Assert.AreEqual(content.status, status);
 
+                
+                
+
             });
         }
+
+        [Test]
+        public void UpdateAPet()
+        {
+            string filePath = @"C:\Users\user\Source\Repos\PetStoreAPI\PetStoreAPI\DataProviders\UpdatePet.json";
+            Assert.Multiple(() =>
+            {
+                var _payload = ModifyContent.ParseJson<AddAPetBody>(filePath);
+                var api = new RestResponses();
+                var response = api.PutResponse("pet", _payload);
+                var content = ModifyContent.DeserializeJson<AddAPetBody>(response);
+                Assert.AreEqual((int)response.StatusCode, 200);
+                Assert.AreEqual(content.id, 42);
+                Assert.AreEqual(content.category.id, 12);
+                Assert.AreEqual(content.category.name, "German Shepperd");
+                Assert.AreEqual(content.name, "Rex");
+                Assert.AreEqual(content.photoUrls[0], "URL 1");
+                Assert.AreEqual(content.tags[0].id, 12);
+                Assert.AreEqual(content.tags[0].name, "tag 1");
+                Assert.AreEqual(content.status, "available");
+
+            });     
+        }
+
+        
     }
 }
