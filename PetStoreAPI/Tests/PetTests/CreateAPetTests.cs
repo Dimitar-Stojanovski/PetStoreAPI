@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PetStoreAPI.Tests.PetTests
 {
@@ -16,9 +17,9 @@ namespace PetStoreAPI.Tests.PetTests
 
         [TestCaseSource(typeof(DataForCreateAPet), nameof(DataForCreateAPet.TestDataForCreatingPet))]
 
-        public void CreateAPet(int id, int catId, string catName, string url1, string url2, int tagId, string tagName,string status)
+        public async Task CreateAPet(int id, int catId, string catName, string url1, string url2, int tagId, string tagName,string status)
         {
-            Assert.Multiple(() =>
+            Assert.Multiple(async () =>
             {
                 var _pet = new AddAPetBody
                 {
@@ -31,7 +32,7 @@ namespace PetStoreAPI.Tests.PetTests
                 };
 
                 var api = new RestResponses();
-                var response = api.PostResponse("pet", _pet);
+                var response = await api.PostResponse("pet", _pet);
                 var code = (int)response.StatusCode;
                 Assert.AreEqual(200, code);
                 var content = ModifyContent.DeserializeJson<AddAPetBody>(response);
@@ -53,14 +54,14 @@ namespace PetStoreAPI.Tests.PetTests
         }
 
         [Test]
-        public void UpdateAPet()
+        public async Task UpdateAPet()
         {
             string filePath = @"C:\Users\user\Source\Repos\PetStoreAPI\PetStoreAPI\DataProviders\UpdatePet.json";
-            Assert.Multiple(() =>
+            Assert.Multiple(async () =>
             {
                 var _payload = ModifyContent.ParseJson<AddAPetBody>(filePath);
                 var api = new RestResponses();
-                var response = api.PutResponse("pet", _payload);
+                var response = await api.PutResponse("pet", _payload);
                 var content = ModifyContent.DeserializeJson<AddAPetBody>(response);
                 Assert.AreEqual((int)response.StatusCode, 200);
                 Assert.AreEqual(content.id, 42);

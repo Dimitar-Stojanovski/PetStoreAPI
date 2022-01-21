@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using NUnit;
 using NUnit.Framework;
 using PetStoreAPI.Framework;
@@ -14,12 +15,12 @@ namespace PetStoreAPI.Tests.StoreTests
         private HttpStatusCode statusCode;
         [Test]
 
-        public void GetPetInventoriesByStatus()
+        public async Task GetPetInventoriesByStatus()
         {
-            Assert.Multiple(() =>
+            Assert.Multiple(async () =>
             {
                 var api = new RestResponses();
-                var response = api.GetResponse("store/inventory");
+                var response = await api.GetResponse("store/inventory");
                 var code = (int)response.StatusCode;
                 Assert.AreEqual(200, code);
                 var _inventory = ModifyContent.DeserializeJson<GetStoreInventoryBody>(response);

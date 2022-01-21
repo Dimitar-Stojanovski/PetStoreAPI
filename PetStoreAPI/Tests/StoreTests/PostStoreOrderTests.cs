@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PetStoreAPI.Tests.StoreTests
 {
@@ -14,9 +15,9 @@ namespace PetStoreAPI.Tests.StoreTests
         private HttpStatusCode statusCode;
 
         [TestCaseSource(typeof(DataForPostStoreOrder), nameof(DataForPostStoreOrder.GetDataForCSV))]
-        public void PostStoreOrderTest(int id, int petId, int quantity, dynamic status, dynamic complete)
+        public async Task PostStoreOrderTest(int id, int petId, int quantity, dynamic status, dynamic complete)
         {
-            Assert.Multiple(() =>
+            Assert.Multiple(async () =>
             {
                 var _inventory = new PostStoreOrderBody
                 {
@@ -30,7 +31,7 @@ namespace PetStoreAPI.Tests.StoreTests
                 };
 
                 var api = new RestResponses();
-                var response = api.PostResponse("store/order", _inventory);
+                var response = await api.PostResponse("store/order", _inventory);
                 var code = (int)response.StatusCode;
                 Assert.AreEqual(200, code);
                 var content = ModifyContent.DeserializeJson<PostStoreOrderBody>(response);
@@ -47,12 +48,12 @@ namespace PetStoreAPI.Tests.StoreTests
         }
 
         [Test]
-        public void VerifyThatTheOrderIsPlaced()
+        public async Task VerifyThatTheOrderIsPlaced()
         {
-            Assert.Multiple(() =>
+            Assert.Multiple(async () =>
             {
                 var api = new RestResponses();
-                var response = api.GetResponse("store/order/123");
+                var response = await api.GetResponse("store/order/123");
                 var code = (int)response.StatusCode;
                 Assert.AreEqual(200, code);
                 var _inventory = ModifyContent.DeserializeJson<PostStoreOrderBody>(response);

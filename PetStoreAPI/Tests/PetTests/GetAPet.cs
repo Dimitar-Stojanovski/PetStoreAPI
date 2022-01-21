@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PetStoreAPI.Tests.PetTests
 {
@@ -13,12 +14,12 @@ namespace PetStoreAPI.Tests.PetTests
         private HttpStatusCode statusCode;
 
         [Test]
-        public void GetAPetFromPost()
+        public async Task GetAPetFromPost()
         {
-            Assert.Multiple(() =>
+            Assert.Multiple(async () =>
             {
                 var api = new RestResponses();
-                var response = api.GetResponse("pet/33");
+                var response = await api.GetResponse("pet/33");
                 Assert.AreEqual(200, (int)response.StatusCode);
                 var content = ModifyContent.DeserializeJson<AddAPetBody>(response);
                 Assert.AreEqual(content.id, 33);

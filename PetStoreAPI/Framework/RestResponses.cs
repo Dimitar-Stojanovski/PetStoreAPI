@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using RestSharp;
 
 namespace PetStoreAPI.Framework
@@ -16,39 +17,39 @@ namespace PetStoreAPI.Framework
             restRequests = new RestRequests();
         }
 
-        public IRestResponse GetResponse(string _endpoint)
+        public async Task <RestResponse> GetResponse(string _endpoint)
         {
             var client = helper.SetUrl(_endpoint);
             var request = restRequests.CreateGetMethod();
             request.RequestFormat = DataFormat.Json;
-            var response = helper.GetResponse(client, request);
+            var response = await helper.GetResponse(client, request);
             return response;
         }
 
-        public IRestResponse PostResponse(string _endpoint, dynamic _payload)
+        public async Task <RestResponse> PostResponse (string _endpoint, dynamic _payload)
         {
             var client = helper.SetUrl(_endpoint);
-            var jsonString = ModifyContent.SerializeJson(_payload);
-            var request = restRequests.CreatePostRequest(jsonString);
-            var response = helper.GetResponse(client, request);
+            //var jsonString = ModifyContent.SerializeJson(_payload);
+            var request = restRequests.CreatePostRequest(_payload);
+            var response = await helper.GetResponse(client, request);
             return response;
         }
 
-        public IRestResponse PutResponse(string _endpoint, dynamic _payload)
+        public async Task <RestResponse> PutResponse(string _endpoint, dynamic _payload)
         {
             var client = helper.SetUrl(_endpoint);
-            var jsonString = ModifyContent.SerializeJson(_payload);
-            var request = restRequests.CreatePutRequest(jsonString);
-            var response = helper.GetResponse(client, request);
+            //var jsonString = ModifyContent.SerializeJson(_payload);
+            var request = restRequests.CreatePutRequest(_payload);
+            var response = await helper.GetResponse(client, request);
             return response;
         }
 
-        public IRestResponse DeleteResponse(string _endpoint)
+        public async Task <RestResponse> DeleteResponse(string _endpoint)
         {
             var client = helper.SetUrl(_endpoint);
             var request = restRequests.CreateDeleteRequest();
             request.RequestFormat = DataFormat.Json;
-            var response = helper.GetResponse(client, request);
+            var response = await helper.GetResponse(client, request);
             return response;
         }
     }

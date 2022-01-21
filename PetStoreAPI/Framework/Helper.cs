@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using RestSharp;
 
 namespace PetStoreAPI.Framework
@@ -18,9 +19,9 @@ namespace PetStoreAPI.Framework
             return restClient;
         }
 
-        public IRestResponse GetResponse(RestClient client, RestRequest restRequest)
+        public async Task <RestResponse> GetResponse(RestClient client, RestRequest restRequest)
         {
-            return restClient.Execute(restRequest);
+            return await restClient.ExecuteAsync(restRequest);
         }
     }
 }
